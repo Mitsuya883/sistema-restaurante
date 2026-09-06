@@ -38,7 +38,15 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
         $user = Auth::user();
-        if ($user->role === 'cocina') return redirect()->intended(route('cocina.index'));
+
+        if ($user->role === 'cocina'){
+            return redirect()->intended(route('cocina.index'));
+        } 
+
+        if ($user->role === 'mozo') {
+            return redirect()->intended(route('mozo.index')); 
+        }
+        
         return redirect()->intended(route('dashboard'));
     }
 
