@@ -25,6 +25,15 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::get('/dashboard', function(){ 
+        $role = Auth::user()->role; 
+
+        if ($role === 'cocina'){
+            return redirect()->route('cocina.index');
+        }
+
+        return app(OrderController::class)->index();    
+    })->name('dashboard');
 
     Route::middleware('role:cocina,admin')->group(function () {
         Route::get('/cocina', [CocinaController::class, 'index'])->name('cocina.index');
@@ -33,8 +42,6 @@ Route::middleware('auth')->group(function () {
 
 
     Route::middleware('role:mozo,admin')->group(function () {
-
-        Route::get('/dashboard', [OrderController::class, 'index'])->name('dashboard');
 
         Route::get('/mesa/{table}', [OrderController::class, 'show'])->name('orders.show');
         Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
