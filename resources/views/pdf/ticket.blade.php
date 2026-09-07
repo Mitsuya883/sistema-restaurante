@@ -17,7 +17,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>CEVICHERÍA EL SOLY</h1>
+        <h1>Torremolinos</h1>
         <div>RUC: 20601234567</div> <div>Salaverry N°625, Ascope</div>
         <div>Telf: +51 974 363 148</div>
     </div>

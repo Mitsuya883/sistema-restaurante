@@ -12,6 +12,7 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\MesaController;
 use App\Http\Controllers\RepartidorController;
 use App\Http\Controllers\ReporteController;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -25,24 +26,25 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/dashboard', function(){ 
-        $role = Auth::user()->role; 
-
-        if ($role === 'cocina'){
+    // Redirección inteligente del Dashboard según el rol del usuario
+    Route::get('/dashboard', function () {
+        $role = Auth::user()->role;
+        
+        if ($role === 'cocina') {
             return redirect()->route('cocina.index');
         }
-
-        return app(OrderController::class)->index();    
+        
+        return app(OrderController::class)->index();
     })->name('dashboard');
 
+    // Rutas para Cocina y Admin
     Route::middleware('role:cocina,admin')->group(function () {
         Route::get('/cocina', [CocinaController::class, 'index'])->name('cocina.index');
         Route::post('/cocina/{id}/listo', [CocinaController::class, 'marcarListo'])->name('cocina.listo');
     });
 
-
+    // Rutas para Mozo y Admin
     Route::middleware('role:mozo,admin')->group(function () {
-
         Route::get('/mesa/{table}', [OrderController::class, 'show'])->name('orders.show');
         Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
         Route::put('/orders/{id}/cobrar', [OrderController::class, 'cobrarOrden'])->name('orders.cobrar');
@@ -61,9 +63,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/reservations/{id}/confirm', [ReservaController::class, 'confirm'])->name('reservations.confirm');
     });
 
-
+    // Rutas de Administración
     Route::middleware('role:admin')->group(function () {
-
         Route::resource('admin/products', AdminProductController::class)->names('admin.products');
         Route::put('/admin/productos/{id}/toggle', [AdminProductController::class, 'toggleDisponibilidad'])->name('admin.productos.toggle');
         Route::resource('admin/categorias', CategoriaController::class)->names('admin.categorias');
@@ -73,11 +74,11 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/admin/reportes', [ReporteController::class, 'index'])->name('admin.reports.index');
 
-        Route::resource('admin/users', \App\Http\Controllers\Admin\UserController::class)
+        Route::resource('admin/users', UserController::class)
              ->names('admin.users')
              ->except(['show', 'destroy']);
 
-        Route::put('/admin/users/{id}/toggle', [\App\Http\Controllers\Admin\UserController::class, 'toggleAccess'])
+        Route::put('/admin/users/{id}/toggle', [UserController::class, 'toggleAccess'])
              ->name('admin.users.toggle');
 
         Route::get('/buttons/text', function () { return view('buttons-showcase.text'); })->name('buttons.text');

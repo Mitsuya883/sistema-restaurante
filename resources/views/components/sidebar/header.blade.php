@@ -4,8 +4,8 @@
         href="{{ route('dashboard') }}"
         class="inline-flex items-center gap-2">
         <img
-            src="{{ asset('images/logo.png') }}"
-            alt="El Soly - Cevichería Restaurante"
+            src="{{ asset('images/mi-logo.png') }}"
+            alt="Torremolinos"
             class="w-40 h-40 object-contain" />
 
         <span class="sr-only">Dashboard</span>

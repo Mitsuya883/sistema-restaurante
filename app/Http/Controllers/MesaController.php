@@ -8,10 +8,16 @@ use Illuminate\Http\Request;
 class MesaController extends Controller
 {
     public function index()
-    {
-        $tables = Table::all();
-        return view('admin.mesas.index', compact('tables'));
-    }
+{
+    $mesas = Mesa::all();
+
+    $disponibles = $mesas->where('estado', 'disponible')->count(); // o 'libre'
+    $ocupadas = $mesas->where('estado', 'ocupada')->count();
+    $reservadas = $mesas->where('estado', 'reservada')->count();
+    $total = $mesas->count();
+
+    return view('dashboard', compact('mesas', 'disponibles', 'ocupadas', 'reservadas', 'total'));
+}
 
     public function create()
     {

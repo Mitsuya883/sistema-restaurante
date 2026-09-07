@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- <title>{{ config('app.name', 'K UI') }}</title> -->
-     <title>Cevichería El Soly</title>
-    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+     <title>Torremolinos</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/mi-logo.png') }}">
 
     <!-- Fonts -->
     <link
@@ -68,5 +68,18 @@
         </div>
     </div>
 </body>
+
+<style>
+    body, html, main, .min-h-screen, .bg-gray-100, .bg-gray-900, .dark\:bg-gray-900, .main-container {
+        background-color: #120e0c !important; /* Fondo café espresso muy oscuro */
+    }
+    .panel-card {
+        background-color: #1e1714 !important; /* Panel café moka */
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    }
+    .table-card {
+        background-color: #2a201c !important; /* Tarjetas de mesa */
+    }
+</style>
 
 </html>

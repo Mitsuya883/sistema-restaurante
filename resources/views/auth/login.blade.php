@@ -1,79 +1,286 @@
-<x-guest-layout>
-    <div class="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 p-4">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Torremolino's | Iniciar Sesión</title>
+    <style>
+        :root {
+            --orange: #f7931e;
+            --orange-dark: #e8720c;
+            --panel-bg: rgba(27, 36, 54, 0.85);
+            --input-bg: rgba(41, 52, 74, 0.8);
+            --input-border: rgba(255, 255, 255, 0.1);
+            --text-light: #f4f4f4;
+            --text-muted: #9aa4b8;
+            --text-faint: #6b7690;
+        }
 
-        <div class="mb-8 text-center">
-            <a href="/">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-24 w-auto mx-auto ">
-            </a>
-            <h2 class="mt-4 text-2xl font-black text-gray-800 dark:text-gray-200 tracking-tight">
-                ¡Bienvenido de nuevo!
-            </h2>
-            <p class="text-sm text-gray-500 dark:text-gray-400">Ingresa tus credenciales para acceder</p>
-        </div>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        <div class="w-full max-w-md bg-white dark:bg-dark-eval-1 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #090d16;
+        }
 
-            <div class="p-8">
-                <x-auth-session-status class="mb-4" :status="session('status')" />
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 1700px;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
 
-                @if ($errors->any())
-                    <div class="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-lg">
-                        <div class="flex items-start gap-3">
-                            <i class="fa-solid fa-circle-exclamation text-red-500 mt-0.5"></i>
-                            <div>
-                                <h4 class="font-bold text-red-700 dark:text-red-400 text-sm">Error de acceso</h4>
-                                <ul class="list-disc list-inside text-xs text-red-600 dark:text-red-300 mt-1">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                @endif
+        /* SECCIÓN IZQUIERDA */
+        .left {
+            flex: 1.15;
+            position: relative;
+            background: linear-gradient(110deg, rgba(0,0,0,0.65) 20%, rgba(0,0,0,0.2) 80%), 
+                        url('/images/Fondo-login.png') center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 80px;
+            color: #fff;
+            clip-path: polygon(0 0, 96% 0, 100% 100%, 0% 100%);
+            border-right: 2px solid var(--orange);
+        }
 
-                <form method="POST" action="{{ route('login') }}" class="space-y-6">
-                    @csrf
+        .content-box {
+            width: 100%;
+            max-width: 440px;
+        }
 
-                    <div>
-                        <label for="email" class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1.5 uppercase tracking-wide ml-1">
-                            Correo Electrónico
-                        </label>
-                        <div class="relative group">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 group-focus-within:text-orange-500 transition-colors">
-                                <x-heroicon-o-mail class="w-5 h-5" />
-                            </div>
-                            <input id="email" type="email" name="email" :value="old('email')" required autofocus placeholder="tucorreo@ejemplo.com"
-                                class="w-full pl-10 py-3 text-sm border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-dark-eval-2 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all shadow-sm placeholder-gray-400">
-                        </div>
-                    </div>
+        .logo-wrap {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
 
-                    <div>
-                        <label for="password" class="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1.5 uppercase tracking-wide ml-1">
-                            Contraseña
-                        </label>
-                        <div class="relative group">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 group-focus-within:text-orange-500 transition-colors">
-                                <x-heroicon-o-lock-closed class="w-5 h-5" />
-                            </div>
-                            <input id="password" type="password" name="password" required autocomplete="current-password" placeholder="••••••••"
-                                class="w-full pl-10 py-3 text-sm border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-dark-eval-2 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all shadow-sm placeholder-gray-400">
-                        </div>
-                    </div>
+        .my-logo {
+            max-width: 180px;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.6));
+            transition: transform 0.3s ease;
+        }
 
-                    <button type="submit" class="w-full py-3 bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-700 hover:to-orange-600 text-white rounded-xl shadow-lg shadow-orange-500/30 font-bold transition-all transform hover:-translate-y-0.5 active:scale-95 flex items-center justify-center gap-2">
-                        <x-heroicon-o-login class="w-5 h-5" />
-                        <span>Iniciar Sesión</span>
-                    </button>
+        .my-logo:hover {
+            transform: scale(1.03);
+        }
 
-                </form>
+        .welcome-title {
+            font-size: 3.2rem;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 18px;
+            border-left: 5px solid var(--orange);
+            padding-left: 22px;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .welcome-title .accent { 
+            color: var(--orange); 
+            display: block; 
+            font-style: italic;
+        }
+
+        .subtitle { 
+            font-size: 1.15rem; 
+            color: #e8e8e8; 
+            padding-left: 27px; 
+            font-weight: 400; 
+            letter-spacing: 0.3px;
+        }
+
+        /* SECCIÓN DERECHA */
+        .right {
+            flex: 1;
+            background: #090d16;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            position: relative;
+        }
+
+        .form-card {
+            width: 100%;
+            max-width: 580px;
+            background: var(--panel-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 24px;
+            padding: 50px 56px 36px;
+            border: 1px solid rgba(247, 147, 30, 0.25);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 
+                        0 0 30px rgba(247, 147, 30, 0.08);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-card:hover {
+            border-color: rgba(247, 147, 30, 0.4);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 
+                        0 0 40px rgba(247, 147, 30, 0.15);
+        }
+
+        .field-label {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .input-wrap {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 14px;
+            padding: 16px 20px;
+            margin-bottom: 26px;
+            transition: all 0.25s ease;
+        }
+
+        .input-wrap:focus-within {
+            border-color: var(--orange);
+            background: rgba(41, 52, 74, 1);
+            box-shadow: 0 0 0 4px rgba(247, 147, 30, 0.18);
+        }
+
+        .input-wrap svg { 
+            flex-shrink: 0; 
+            width: 22px; 
+            height: 22px; 
+            color: var(--text-faint); 
+            transition: color 0.25s ease;
+        }
+
+        .input-wrap:focus-within svg {
+            color: var(--orange);
+        }
+        
+        .input-wrap input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-light);
+            font-size: 1rem;
+            width: 100%;
+        }
+
+        .input-wrap input::placeholder { color: var(--text-faint); }
+
+        .btn-login {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: linear-gradient(90deg, var(--orange), var(--orange-dark));
+            border: none;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 700;
+            padding: 18px;
+            border-radius: 14px;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 8px 25px rgba(247, 147, 30, 0.35);
+            transition: all 0.25s ease;
+        }
+
+        .btn-login:hover { 
+            filter: brightness(1.12); 
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(247, 147, 30, 0.5);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .btn-login svg { width: 22px; height: 22px; }
+
+        .divider { 
+            border: none; 
+            border-top: 1px solid rgba(255, 255, 255, 0.08); 
+            margin: 32px 0 22px; 
+        }
+
+        .footer { 
+            text-align: center; 
+            color: var(--text-faint); 
+            font-size: 0.85rem; 
+        }
+
+        @media (max-width: 900px) {
+            .container { flex-direction: column; }
+            .left { clip-path: none; border-right: none; border-bottom: 3px solid var(--orange); padding: 50px 30px; min-height: 40vh; }
+            .welcome-title { font-size: 2.2rem; }
+            .form-card { padding: 36px 24px; border-radius: 0; border: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="left">
+        <div class="content-box">
+            <div class="logo-wrap">
+                <img src="/images/mi-logo.png" alt="Logo Restaurante" class="my-logo">
             </div>
 
-            <div class="px-8 py-4 bg-gray-50 dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700 text-center">
-                <p class="text-xs text-gray-400">
-                    &copy; {{ date('Y') }} Sistema de Restaurante
-                </p>
+            <div class="welcome-title">
+                ¡Bienvenido de <span class="accent">nuevo!</span>
             </div>
+            <p class="subtitle">Ingresa tus credenciales para acceder</p>
         </div>
     </div>
-</x-guest-layout>
+
+    <div class="right">
+        <!-- SE AGREGÓ METHOD Y ACTION SIN CAMBIAR ESTILOS -->
+        <form method="POST" action="{{ route('login') }}" class="form-card">
+            @csrf
+
+            <label class="field-label">CORREO ELECTRÓNICO</label>
+            <div class="input-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 6 10-6"/></svg>
+                <!-- SE AGREGÓ NAME="EMAIL" -->
+                <input type="email" name="email" value="{{ old('email') }}" placeholder="tucorreo@ejemplo.com" required autofocus>
+            </div>
+
+            <label class="field-label">CONTRASEÑA</label>
+            <div class="input-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
+                <!-- SE AGREGÓ NAME="PASSWORD" -->
+                <input type="password" name="password" placeholder="Tu contraseña" required>
+            </div>
+
+            <!-- SE CAMBIÓ A TYPE="SUBMIT" -->
+            <button type="submit" class="btn-login">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 3H9a2 2 0 00-2 2v14a2 2 0 002 2h6"/><path d="M10 12h11m0 0l-4-4m4 4l-4 4"/></svg>
+                Iniciar Sesión
+            </button>
+
+            <hr class="divider">
+
+            <div class="footer">
+                <div>© 2026 Sistema de Restaurante</div>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

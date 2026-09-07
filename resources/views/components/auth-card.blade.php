@@ -4,7 +4,7 @@
             <!-- <x-application-logo class="w-20 h-20" /> -->
             <img
                 src="{{ asset('images/logo.png') }}"
-                alt="El Soly - Cevichería Restaurante"
+                alt=" Torremolinos"
                 class="w-40 h-40 object-contain" />
         </a>
     </div>
