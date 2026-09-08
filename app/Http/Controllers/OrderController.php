@@ -127,7 +127,26 @@ class OrderController extends Controller
 
         $repartidores = Repartidor::where('activo', true)->get();
 
-        return view('orders.dispatch', compact('pedidosPendientes', 'repartidores'));
+        // Métricas calculadas para la interfaz gráfica del despacho
+        $totalHoy = Order::where('order_type', 'delivery')
+            ->whereDate('created_at', today())
+            ->count();
+
+        $enPreparacion = $pedidosPendientes->whereIn('status', ['pending', 'preparing'])->count();
+        $enCamino = $pedidosPendientes->where('status', 'en_camino')->count();
+        $entregadosHoy = Order::where('order_type', 'delivery')
+            ->whereDate('created_at', today())
+            ->where('status', 'paid')
+            ->count();
+
+        return view('orders.dispatch', compact(
+            'pedidosPendientes',
+            'repartidores',
+            'totalHoy',
+            'enPreparacion',
+            'enCamino',
+            'entregadosHoy'
+        ));
     }
 
     public function assignDriver(Request $request, $orderId)
